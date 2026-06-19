@@ -1,0 +1,58 @@
+services:
+  bot:
+    build: .
+    container_name: discord-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - REDIS_URL=redis://redis:6379
+      - REDIS_DB=true
+      - PORT=3000
+      - LEADERBOARD_ENABLED=true
+      - TELEMETRY_STATE=false
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./secrets:/app/secrets
+      - ./logs:/app/logs
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - bot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: discord-bot-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - bot-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+
+volumes:
+  redis-data:
+
+networks:
+  bot-network:
+    driver: bridge
