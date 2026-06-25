@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node scr/main.js",
+    "launcher": "node scr/stared.js",
     "dev": "nodemon scr/main.js",
     "security": "node scr/security-helper.js --encrypt",
     "decrypt": "node scr/security-helper.js --decrypt-all",
@@ -15,9 +16,10 @@
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "open": "^11.0.0",
     "redis": "^4.6.14"
   },
   "devDependencies": {
-    "nodemon": "^3.1.2"
+    "nodemon": "^3.1.14"
   }
 }

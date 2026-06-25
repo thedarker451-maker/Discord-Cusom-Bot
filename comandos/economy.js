@@ -706,10 +706,15 @@ export const economyCommands = [
         },
         async executeSlash(interaction) {
             const limit = interaction.options.getInteger("limite") || 10;
+            
+            // 5s secret cooldown to collect data
+            await interaction.deferReply();
+            await new Promise(r => setTimeout(r, 5000));
+
             const board = await db.getEconomyLeaderboard(limit);
 
             if (!board.length) {
-                return interaction.reply({ content: "📭 Aún no hay datos en el ranking.", ephemeral: true });
+                return interaction.editReply({ content: "📭 Aún no hay datos en el ranking." });
             }
 
             const medals = ["🥇", "🥈", "🥉"];
@@ -726,7 +731,7 @@ export const economyCommands = [
                 .setColor("#FFD700")
                 .setFooter({ text: "Custom Discord Bot · Economía" });
 
-            await interaction.reply({ embeds: [embed] });
+            await interaction.editReply({ embeds: [embed] });
         },
         async executePrefix(message, args) {
             const limit = Math.min(15, Math.max(3, parseInt(args[0]) || 10));

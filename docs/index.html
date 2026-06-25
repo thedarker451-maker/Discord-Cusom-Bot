@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Discord Bot - Documentación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-blurple: #5865F2;
+            --accent-green: #57F287;
+            --accent-yellow: #FEE75C;
+            --accent-red: #ED4245;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-container { display: flex; min-height: 100vh; }
+
+        aside {
+            width: 280px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+        }
+
+        .logo-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--accent-blurple), #8b5cf6);
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            display: block;
+            transition: all 0.2s;
+        }
+        .nav-item a:hover { background-color: var(--bg-tertiary); color: #fff; }
+        .nav-item.active a { background-color: var(--accent-blurple); color: #fff; }
+
+        main { margin-left: 280px; flex: 1; padding: 3rem 4rem; max-width: 1100px; }
+        section { display: none; animation: fadeIn 0.3s ease forwards; }
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; color: #fff; }
+        h2 { font-size: 1.75rem; margin-top: 2.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--accent-blurple); }
+        p { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1.05rem; }
+
+        code {
+            font-family: var(--font-mono);
+            background-color: var(--bg-secondary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--accent-green);
+        }
+
+        pre {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        pre code { background: none; border: none; padding: 0; color: #e5e7eb; }
+
+        .copy-btn {
+            position: absolute; top: 0.75rem; right: 0.75rem;
+            background-color: var(--bg-tertiary);
+            color: #fff; border: 1px solid var(--border-color);
+            padding: 0.3rem 0.6rem; border-radius: 4px;
+            font-size: 0.75rem; cursor: pointer; transition: 0.2s;
+        }
+        .copy-btn:hover { background-color: var(--accent-blurple); }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem; border-radius: 8px;
+        }
+        .card h4 { font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .card p { font-size: 0.95rem; margin-bottom: 0; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--bg-secondary); color: #fff; }
+        tr:hover td { background-color: rgba(255,255,255,0.02); color: #fff; }
+
+        .alert {
+            background-color: rgba(88, 101, 242, 0.1);
+            border-left: 4px solid var(--accent-blurple);
+            padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;
+        }
+        .alert.warning { background-color: rgba(254, 231, 92, 0.1); border-left-color: var(--accent-yellow); }
+        .alert.danger { background-color: rgba(237, 66, 69, 0.1); border-left-color: var(--accent-red); }
+        .alert-title { font-weight: 700; margin-bottom: 0.25rem; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <aside>
+        <div class="logo-title">
+            🤖 Custom Bot
+            <span class="logo-badge">v1.0.0</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" data-section="intro"><a href="#intro">Introducción</a></li>
+            <li class="nav-item" data-section="setup"><a href="#setup">Instalación y Config</a></li>
+            <li class="nav-item" data-section="commands"><a href="#commands">Lista de Comandos</a></li>
+            <li class="nav-item" data-section="economy"><a href="#economy">Sistema de Economía</a></li>
+            <li class="nav-item" data-section="logo"><a href="#logo">Terminal Visual</a></li>
+            <li class="nav-item" data-section="module"><a href="#module">Uso como Módulo</a></li>
+        </ul>
+    </aside>
+
+    <main>
+        <!-- INTRODUCCION -->
+        <section id="intro" class="active">
+            <h1>Bienvenido a Custom Discord Bot</h1>
+            <p>Un bot de Discord robusto, modular y altamente personalizable. Diseñado para ser el corazón de tu comunidad, integrando economía, moderación avanzada, diversión y capacidades de Inteligencia Artificial.</p>
+
+            <div class="grid-cards">
+                <div class="card">
+                    <h4>🛡️ Moderación Avanzada</h4>
+                    <p>Sistema de casos, advertencias automáticas (warns), timeouts, kicks y bans integrados con logs seguros.</p>
+                </div>
+                <div class="card">
+                    <h4>💰 Economía Persistente</h4>
+                    <p>Trabajos, tienda de ítems, banco, recompensas diarias y una tabla de clasificación (leaderboard).</p>
+                </div>
+                <div class="card">
+                    <h4>🤖 Integración IA</h4>
+                    <p>Soporte multi-proveedor (OpenAI, Mistral, Gemini, DeepSeek, etc.) para interactuar inteligentemente con los usuarios.</p>
+                </div>
+                <div class="card">
+                    <h4>⚡ Comandos Híbridos</h4>
+                    <p>Todos los comandos responden tanto a comandos de barra (<code>/</code>) como a prefijo tradicional (<code>!</code>).</p>
+                </div>
+            </div>
+
+            <div class="alert">
+                <div class="alert-title">Soporte Completo para Slash Commands</div>
+                <p style="margin:0; font-size: 0.95rem;">El bot registra automáticamente los comandos de barra en tu servidor al iniciar, brindando una experiencia moderna y rápida.</p>
+            </div>
+        </section>
+
+        <!-- INSTALACION -->
+        <section id="setup">
+            <h1>Instalación y Configuración</h1>
+            <p>Para levantar el bot en tu propio entorno, sigue estos pasos cuidadosamente.</p>
+
+            <h3>1. Clonar e Instalar</h3>
+            <pre><code>git clone https://github.com/thedarker451-maker/Discord-Custom-Bot.git
+cd Discord-Custom-Bot
+npm install</code><button class="copy-btn">Copiar</button></pre>
+
+            <h3>2. Configurar Variables de Entorno</h3>
+            <p>Renombra el archivo <code>.env.example</code> a <code>.env</code> y configura tus credenciales:</p>
+            <pre><code>DISCORD_TOKEN=tu_token_aqui
+PREFIX=!
+NODE_ENV=production
+
+# Configuración IA (Opcional)
+PROVIDER=mistral
+API_KEY=tu_api_key_aqui</code><button class="copy-btn">Copiar</button></pre>
+
+            <div class="alert danger">
+                <div class="alert-title">¡Precaución!</div>
+                <p style="margin:0; font-size: 0.95rem;">Nunca compartas tu archivo <code>.env</code> ni lo subas a repositorios públicos. Contiene tus tokens y llaves privadas.</p>
+            </div>
+
+            <h3>3. Iniciar el Bot</h3>
+            <p>Puedes iniciar el bot en modo desarrollo o producción:</p>
+            <pre><code># Modo Producción
+npm start
+
+# Modo Desarrollo (se reinicia al guardar cambios)
+npm run dev</code><button class="copy-btn">Copiar</button></pre>
+        </section>
+
+        <!-- COMANDOS -->
+        <section id="commands">
+            <h1>Lista de Comandos</h1>
+            <p>Todos los comandos están disponibles vía Prefijo (ej: <code>!ping</code>) y vía Slash Commands (ej: <code>/ping</code>).</p>
+
+            <h2>🛡️ Moderación</h2>
+            <table>
+                <tr><th>Comando</th><th>Descripción</th><th>Permisos</th></tr>
+                <tr><td><code>/kick</code></td><td>Expulsa a un usuario y registra el caso.</td><td>Kick Members</td></tr>
+                <tr><td><code>/ban</code></td><td>Banea a un usuario y registra el caso.</td><td>Ban Members</td></tr>
+                <tr><td><code>/tempban</code></td><td>Banea temporalmente (formato: 30m, 2h, 1d).</td><td>Ban Members</td></tr>
+                <tr><td><code>/unban</code></td><td>Desbanea usando la ID del usuario.</td><td>Ban Members</td></tr>
+                <tr><td><code>/mute</code></td><td>Aplica un timeout temporal (minutos).</td><td>Moderate Members</td></tr>
+                <tr><td><code>/unmute</code></td><td>Remueve el silencio temporal.</td><td>Moderate Members</td></tr>
+                <tr><td><code>/warn</code></td><td>Advierte a un usuario. (3=Mute, 5=Ban).</td><td>Manage Messages</td></tr>
+                <tr><td><code>/unwarn</code></td><td>Elimina una advertencia específica por ID.</td><td>Manage Messages</td></tr>
+                <tr><td><code>/clearwarns</code></td><td>Elimina todas las advertencias de un usuario.</td><td>Manage Messages</td></tr>
+                <tr><td><code>/warns</code></td><td>Muestra el historial de advertencias.</td><td>Manage Messages</td></tr>
+                <tr><td><code>/cases</code></td><td>Historial completo de moderación.</td><td>Manage Messages</td></tr>
+                <tr><td><code>/clear</code></td><td>Purga masivamente mensajes (1-100).</td><td>Manage Messages</td></tr>
+                <tr><td><code>/slowmode</code></td><td>Activa modo lento en el canal.</td><td>Manage Channels</td></tr>
+                <tr><td><code>/lockdown</code></td><td>Bloquea/Desbloquea el canal actual.</td><td>Manage Channels</td></tr>
+                <tr><td><code>/nuke</code></td><td>Recrea el canal borrando todo el historial.</td><td>Administrator</td></tr>
+            </table>
+
+            <h3>⚠️ Sistema de Warns</h3>
+            <p>El bot implementa un sistema progresivo de sanciones automáticas:</p>
+            
+            <div class="grid-cards">
+                <div class="card">
+                    <h4>🟢 Warns 1-2 (Verde)</h4>
+                    <p>Solo registro. El usuario recibe notificación DM con el motivo.</p>
+                </div>
+                <div class="card">
+                    <h4>🟡 Warn 3 (Amarillo)</h4>
+                    <p><strong>Mute automático por 1 hora.</strong> Color: #DA9031</p>
+                </div>
+                <div class="card">
+                    <h4>🟠 Warn 4 (Naranja)</h4>
+                    <p>Sanción severa registrada. Color: #EE5A34</p>
+                </div>
+                <div class="card">
+                    <h4>🔴 Warn 5 (Rojo)</h4>
+                    <p><strong>Ban automático permanente.</strong> Color: #FD2F00</p>
+                </div>
+            </div>
+
+            <div class="alert warning">
+                <div class="alert-title">Comandos de Gestión de Warns</div>
+                <p style="margin:0; font-size: 0.95rem;">
+                    <code>/unwarn [caso_id]</code> - Remueve una advertencia específica.<br>
+                    <code>/clearwarns [usuario]</code> - Limpia todas las advertencias.<br>
+                    <code>/warns [usuario]</code> - Muestra el conteo y detalles.
+                </p>
+            </div>
+
+            <h2>✨ Diversión & Utilidad</h2>
+            <table>
+                <tr><th>Comando</th><th>Descripción</th></tr>
+                <tr><td><code>/userinfo</code></td><td>Muestra información detallada de un miembro.</td></tr>
+                <tr><td><code>/serverinfo</code></td><td>Muestra estadísticas y datos del servidor.</td></tr>
+                <tr><td><code>/avatar</code></td><td>Muestra la foto de perfil en alta resolución.</td></tr>
+                <tr><td><code>/8ball</code></td><td>Pregunta a la bola 8 mágica.</td></tr>
+                <tr><td><code>/slap</code> / <code>/hug</code></td><td>Interacciones de roleplay con gifs aleatorios.</td></tr>
+                <tr><td><code>/amor</code></td><td>Calcula la compatibilidad entre dos usuarios.</td></tr>
+            </table>
+
+            <h2>🤖 Inteligencia Artificial</h2>
+            <table>
+                <tr><th>Comando</th><th>Descripción</th></tr>
+                <tr><td><code>/ask</code></td><td>Hazle una pregunta a la IA configurada.</td></tr>
+                <tr><td><code>/ai-provider</code></td><td>Cambia el proveedor de IA (Mistral, OpenAI...).</td></tr>
+            </table>
+        </section>
+
+        <!-- ECONOMIA -->
+        <section id="economy">
+            <h1>Sistema de Economía</h1>
+            <p>El bot cuenta con un completo sistema económico (Custom Coins - NC) con subida de niveles, trabajos y banco.</p>
+
+            <div class="grid-cards">
+                <div class="card">
+                    <h4>💳 Billetera y Banco</h4>
+                    <p>Usa <code>/balance</code> para ver tu dinero. Guarda tu dinero seguro usando <code>/depositar</code> y sácalo con <code>/retirar</code>.</p>
+                </div>
+                <div class="card">
+                    <h4>💼 Trabajos y Niveles</h4>
+                    <p>Usa <code>/trabajar</code> para ganar NC y Experiencia. A medida que subes de nivel, desbloqueas mejores profesiones (Doctor, CEO).</p>
+                </div>
+                <div class="card">
+                    <h4>🏪 Tienda e Inventario</h4>
+                    <p>Mira la <code>/tienda</code> y usa <code>/comprar</code> para obtener picos o cañas. Revísalos en tu <code>/inventario</code>.</p>
+                </div>
+                <div class="card">
+                    <h4>🎣 Minería y Pesca</h4>
+                    <p>Si tienes las herramientas, usa <code>/minar</code> o <code>/pescaria</code> para obtener recompensas aleatorias muy valiosas.</p>
+                </div>
+            </div>
+
+            <h3>Otros Comandos de Economía</h3>
+            <ul>
+                <li><code style="color:var(--text-primary)">/daily</code> - Reclama tu recompensa diaria. ¡Mantén la racha para bonos!</li>
+                <li><code style="color:var(--text-primary)">/transferir</code> - Envía dinero a otro usuario.</li>
+                <li><code style="color:var(--text-primary)">/apostar</code> - Apuesta tus monedas al 50/50.</li>
+                <li><code style="color:var(--text-primary)">/top</code> - Mira el Leaderboard de los más ricos del servidor.</li>
+            </ul>
+        </section>
+
+        <!-- OH-MY-LOGO -->
+        <section id="logo">
+            <h1>🎨 Terminal Visual con oh-my-logo</h1>
+            <p>El bot utiliza <code>oh-my-logo</code> para mostrar un banner visual impactante al iniciar en la terminal.</p>
+
+            <h3>Configuración Actual</h3>
+            <pre><code>npx oh-my-logo "CUSTOM BOT" sunset --filled --block-font chrome --letter-spacing 2 --reverse-gradient</code><button class="copy-btn">Copiar</button></pre>
+
+            <h3>Paletas Disponibles</h3>
+            <div class="grid-cards">
+                <div class="card">
+                    <h4>🌅 sunset (actual)</h4>
+                    <p>Colores cálidos de atardecer: naranja → rojo → dorado</p>
+                </div>
+                <div class="card">
+                    <h4>🔥 fire</h4>
+                    <p>Rojo intenso → blanco rojizo. Ideal para bots de moderación.</p>
+                </div>
+                <div class="card">
+                    <h4>🌊 ocean</h4>
+                    <p>Azul profundo → púrpura. Estilo elegante y profesional.</p>
+                </div>
+                <div class="card">
+                    <h4>💚 matrix</h4>
+                    <p>Verde hacker clásico. Perfecto para bots技术icos.</p>
+                </div>
+            </div>
+
+            <h3>Modos de Renderizado</h3>
+            <table>
+                <tr><th>Modo</th><th>Descripción</th><th>Comando</th></tr>
+                <tr><td>ASCII Outline</td><td>Caracteres dibujados con líneas</td><td><code>npx oh-my-logo "TEXTO" sunset</code></td></tr>
+                <tr><td>Filled Blocks</td><td>Bloques sólidos con sombras</td><td><code>npx oh-my-logo "TEXTO" sunset --filled</code></td></tr>
+                <tr><td>Chrome Shadow</td><td>Sombras minimalistas y elegantes</td><td><code>--filled --block-font chrome</code></td></tr>
+                <tr><td>Shade</td><td>Efecto de puntos/sombreado</td><td><code>--filled --block-font shade</code></td></tr>
+            </table>
+
+            <h3>Opciones Avanzadas</h3>
+            <ul>
+                <li><code>--letter-spacing N</code> - Espaciado entre caracteres (0-5)</li>
+                <li><code>--reverse-gradient</code> - Invertir colores del gradiente</li>
+                <li><code>-d horizontal|vertical|diagonal</code> - Dirección del gradiente</li>
+                <li><code>--palette-colors '["#color1","#color2"]'</code> - Colores personalizados</li>
+            </ul>
+
+            <div class="alert">
+                <div class="alert-title">Integración con el Bot</div>
+                <p style="margin:0; font-size: 0.95rem;">
+                    oh-my-logo se ejecuta automáticamente al iniciar el bot con <code>npm start</code> o <code>npm run dev</code>.
+                    Si no está disponible, muestra un banner fallback con colores ANSI.
+                </p>
+            </div>
+        </section>
+
+        <!-- USO COMO MODULO -->
+        <section id="module">
+            <h1>Uso como Módulo de Node.js</h1>
+            <p>A partir de la versión 1.0.0, <strong>Custom Discord Bot</strong> se puede importar programáticamente en otros proyectos Node.js.</p>
+
+            <div class="alert warning">
+                <div class="alert-title">Requisito</div>
+                <p style="margin:0; font-size: 0.95rem;">Tu proyecto debe usar ESM (ECMAScript Modules). Asegúrate de tener <code>"type": "module"</code> en tu <code>package.json</code>.</p>
+            </div>
+
+            <h3>Importación Básica</h3>
+            <p>Puedes importar y arrancar el bot pasándole un token directamente o dejando que lea el <code>.env</code>.</p>
+            <pre><code>import { startBot, client, db } from 'custom-discord-bot';
+
+// Iniciar el bot programáticamente
+await startBot('TU_TOKEN_OPCIONAL_AQUI');
+
+// Escuchar eventos extra si lo deseas
+client.on('messageCreate', (msg) => {
+    if(msg.content === 'ping custom') {
+        msg.reply('Pong desde el módulo!');
+    }
+});
+
+// Acceder a la base de datos interna
+const topUsers = await db.getEconomyLeaderboard(5);
+console.log(topUsers);</code><button class="copy-btn">Copiar</button></pre>
+
+            <h3>API Exportada</h3>
+            <table>
+                <tr>
+                    <th>Export</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td><code>startBot(token?)</code></td>
+                    <td>Inicializa los comandos, eventos y conecta el bot a Discord. Retorna la instancia de <code>Client</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>client</code></td>
+                    <td>La instancia activa de <code>discord.js Client</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>db</code></td>
+                    <td>El gestor de base de datos interno (para economía, niveles, casos de moderación, etc.).</td>
+                </tr>
+                <tr>
+                    <td><code>allCommands</code></td>
+                    <td>Array que contiene las definiciones y lógica de todos los comandos registrados.</td>
+                </tr>
+            </table>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('main section');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = item.getAttribute('data-section');
+            
+            navItems.forEach(nav => nav.classList.remove('active'));
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            item.classList.add('active');
+            document.getElementById(target).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const codeEl = btn.previousElementSibling;
+            if (codeEl) {
+                navigator.clipboard.writeText(codeEl.textContent);
+                const original = btn.textContent;
+                btn.textContent = 'Copiado!';
+                setTimeout(() => btn.textContent = original, 2000);
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@ const KEY_PATH = path.resolve(__dirname, "../secrets/.key");
 const ENV_PATH = path.resolve(__dirname, "../secrets/.env");
 
 // Variables que NO deben encriptarse (son configuración, no secretos)
-const SKIP_KEYS = ["PREFIX", "SLASH_COMANDS", "REDIS_DB", "PROVIDER", "AI_MODEL", "ACTIVE", "REFRESH", "PORT", "TELEMETRY_STATE", "WELCOME_MESSAGE_HELP", "LEADERBOARD_ENABLED", "PUBLIC_URL"];
+const SKIP_KEYS = ["PREFIX", "SLASH_COMANDS", "REDIS_DB", "PROVIDER", "AI_MODEL", "ACTIVE", "REFRESH", "PORT", "TELEMETRY_STATE", "WELCOME_MESSAGE_HELP", "LEADERBOARD_ENABLED", "PUBLIC_URL", "DISABLE_ENCRYPTION", "CUSTOM_AI", "CUSTOM_URL", "AI_BASE_URL", "CLOUDFLARE_ACCOUNT_ID", "BAIDU_SECRET", "BOT_ACTIVITY_TYPE", "BOT_ACTIVITY_TEXT", "BOT_ACTIVITY_URL", "BOT_ACTIVITY_STATE", "BOT_ACTIVITY_LARGE_IMAGE", "BOT_ACTIVITY_LARGE_IMAGE_TEXT", "BOT_ACTIVITY_SMALL_IMAGE", "BOT_ACTIVITY_SMALL_IMAGE_TEXT"];
 
 // ── Clave de Encriptación ─────────────────────────────────────
 export function getEncryptionKey() {
@@ -99,6 +99,23 @@ function encryptEnv(keyHex) {
     }
 
     const lines = fs.readFileSync(ENV_PATH, "utf8").split(/\r?\n/);
+    
+    // Si el usuario puso DISABLE_ENCRYPTION=true en el .env, desencriptar si hay algo y abortar la encriptación
+    const disableEncryption = lines.some(l => l.trim().match(/^DISABLE_ENCRYPTION=(true|1)$/i));
+    if (disableEncryption) {
+        const hasEncrypted = lines.some(l => {
+            const eq = l.indexOf("=");
+            return eq !== -1 && l.substring(eq + 1).trim().startsWith("ENC:");
+        });
+        if (hasEncrypted) {
+            console.log("[-] Encriptación deshabilitada (DISABLE_ENCRYPTION=true). Desencriptando claves...");
+            decryptAllEnv(keyHex);
+        } else {
+            console.log("[-] Encriptación deshabilitada por DISABLE_ENCRYPTION=true en .env");
+        }
+        return;
+    }
+
     let modified = 0;
 
     const result = lines.map(line => {

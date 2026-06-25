@@ -195,11 +195,11 @@ function buildStatusHtml(client, port, redisEnabled, redisOk) {
             extra: `Ping: ${Math.round(client.ws?.ping ?? 0)}ms · Servidores: ${client.guilds.cache.size} · Usuarios: ${client.users.cache.size}`
         },
         {
-            name: "Redis",
+            name: "Base de Datos",
             icon: "📦",
             status: !redisEnabled ? "disabled" : (redisOk ? "online" : "offline"),
-            details: !redisEnabled ? "No habilitado (REDIS_DB=false)" : (redisOk ? "Conectado y respondiendo" : "No disponible"),
-            extra: process.env.REDIS_URL || "Sin configurar"
+            details: !redisEnabled ? "No habilitado" : (redisOk ? "Conectada y respondiendo" : "No disponible"),
+            extra: redisEnabled ? "Redis activo" : "Usando almacenamiento local"
         },
         {
             name: "Leaderboard",
@@ -297,6 +297,9 @@ export function startWebServer(client) {
 
     const redisEnabled = (process.env.REDIS_DB || "").toLowerCase() === "true";
 
+    // ── Servir archivos JSON de tickets ───────────────────
+    const TICKETS_DIR = path.resolve(__dirname, "../secrets/tickets");
+
     // ── Routes ──────────────────────────────────────────────
     app.get("/", (_req, res) => {
         res.redirect("/leaderboard");
@@ -315,6 +318,33 @@ export function startWebServer(client) {
     app.get("/status", async (_req, res) => {
         const redisOk = redisEnabled ? await checkRedisHealth() : null;
         res.type("html").send(buildStatusHtml(client, port, redisEnabled, redisOk));
+    });
+
+    // ── Ruta de tickets: /bot/tickets/ticket-XXXX.json ──────
+    app.get("/bot/tickets/:ticketFile", (req, res) => {
+        const ticketFile = req.params.ticketFile;
+        // Solo permitir archivos .json con formato ticket-XXXX
+        if (!/^\d{4}\.json$/.test(ticketFile) && !/^ticket-\d{4}\.json$/.test(ticketFile)) {
+            return res.status(400).json({ error: "Formato de ticket inválido" });
+        }
+        const id = ticketFile.replace('ticket-', '').replace('.json', '');
+        const filePath = path.join(TICKETS_DIR, `${id}.json`);
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ error: "Ticket no encontrado" });
+        }
+        try {
+            const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+            // Agregar info de hosting
+            data._hostingInfo = {
+                servedAt: new Date().toISOString(),
+                botOnline: client.user !== null,
+                botUptime: client.uptime ?? 0,
+                note: "Este archivo estará disponible mientras el bot esté en línea."
+            };
+            res.type("json").send(JSON.stringify(data, null, 2));
+        } catch {
+            res.status(500).json({ error: "Error al leer ticket" });
+        }
     });
 
     app.get("/api/health", async (_req, res) => {
@@ -336,7 +366,7 @@ export function startWebServer(client) {
         console.log(`[+] Web server escuchando en: ${base}`);
         console.log(`[+] Leaderboard: ${base}/leaderboard`);
         console.log(`[+] Estado: ${base}/status`);
-        console.log(`[+] Health: ${base}/api/health`);
+        console.log(`[+] Tickets: ${base}/bot/tickets/`);
     });
 
     server.on("error", (err) => {

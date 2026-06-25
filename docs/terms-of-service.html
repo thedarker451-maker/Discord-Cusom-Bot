@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos de Servicio — Discord Custom Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0b0d14; color: #c8ccd8; line-height: 1.7; }
+        .container { max-width: 820px; margin: 0 auto; padding: 48px 24px 80px; }
+        .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1e2235; }
+        .header h1 { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #7c5cff, #4fd1c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+        .header .subtitle { color: #6b7194; font-size: 0.9rem; }
+        .header .version { display: inline-block; background: #1a1f35; color: #7c5cff; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; margin-top: 12px; font-weight: 600; }
+        h2 { color: #e2e5f0; font-size: 1.25rem; font-weight: 600; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #1e2235; }
+        h3 { color: #a5aad4; font-size: 1rem; font-weight: 600; margin: 24px 0 10px; }
+        p { margin-bottom: 14px; color: #9ba2c0; font-size: 0.92rem; }
+        ul, ol { margin: 12px 0 18px 24px; }
+        li { margin-bottom: 8px; color: #9ba2c0; font-size: 0.92rem; }
+        li strong { color: #c8ccd8; }
+        .highlight { background: #12152a; border-left: 3px solid #7c5cff; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 18px 0; }
+        .highlight.green { border-left-color: #34d399; }
+        .highlight.yellow { border-left-color: #fbbf24; }
+        .highlight.red { border-left-color: #f87171; }
+        .highlight p { margin-bottom: 0; }
+        .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge.purple { background: #7c5cff22; color: #7c5cff; }
+        .badge.green { background: #34d39922; color: #34d399; }
+        .badge.yellow { background: #fbbf2422; color: #fbbf24; }
+        .badge.red { background: #f8717122; color: #f87171; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #1e2235; font-size: 0.88rem; }
+        th { color: #7c5cff; font-weight: 600; background: #0f1225; }
+        td { color: #9ba2c0; }
+        code { background: #151930; padding: 2px 7px; border-radius: 4px; font-size: 0.85rem; color: #4fd1c5; }
+        a { color: #7c5cff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid #1e2235; text-align: center; color: #4a5078; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Términos de Servicio y Política de Privacidad</h1>
+            <p class="subtitle">Discord Custom Bot — Documentación Legal y Técnica</p>
+            <span class="version">Última actualización: 24 de junio de 2026</span>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>1. Aceptación de los Términos</h2>
+        <p>
+            Al instalar, configurar o utilizar Discord Custom Bot (en adelante, "el Bot"), el usuario (en adelante, "el Cliente") acepta íntegramente los presentes Términos de Servicio. Si el Cliente no está de acuerdo con alguno de los términos aquí expuestos, deberá cesar el uso del Bot de manera inmediata.
+        </p>
+        <p>
+            Estos términos constituyen un acuerdo legal vinculante entre el Cliente y los desarrolladores del Bot. Nos reservamos el derecho de modificar estos términos en cualquier momento, siendo responsabilidad del Cliente revisar periódicamente esta página.
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>2. Descripción del Servicio</h2>
+        <p>
+            Discord Custom Bot es un bot de Discord de código abierto diseñado para ofrecer funcionalidades de moderación, economía, gestión de tickets, inteligencia artificial y personalización avanzada. El Bot se ejecuta en un servidor del Cliente y se conecta a la API de Discord.
+        </p>
+
+        <div class="highlight">
+            <p><strong>Naturaleza del servicio:</strong> El Bot opera como un software de terceros que interactúa con la API de Discord. No es un servicio alojado ni gestionado centralmente por el desarrollador.</p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>3. Inteligencia Artificial — Xiaomi MiMo</h2>
+
+        <h3>3.1 Proveedor de IA</h3>
+        <p>
+            El Bot integra un sistema de inteligencia artificial basado en el modelo <strong>Xiaomi MiMo</strong>, proporcionado por Xiaomi Corporation a través de su API compatible con el estándar OpenAI. Esta integración permite a los usuarios realizar consultas de lenguaje natural directamente desde Discord.
+        </p>
+
+        <div class="highlight yellow">
+            <p><strong>Modelo utilizado:</strong> <code>xiaomi/mimo-v2-flash</code> — Modelo de lenguaje de gran escala desarrollado por Xiaomi para asistencia conversacional.</p>
+        </div>
+
+        <h3>3.2 Naturaleza del Servicio de IA</h3>
+        <ul>
+            <li><strong>Servicio de terceros:</strong> Las consultas de IA son procesadas por los servidores de Xiaomi. El Bot actúa únicamente como intermediario entre el usuario de Discord y la API de Xiaomi.</li>
+            <li><strong>Sin garantía de exactitud:</strong> Las respuestas generadas por la IA son probabilísticas y pueden contener errores. No constituyen asesoramiento profesional, legal, médico ni financiero.</li>
+            <li><strong>Uso bajo responsabilidad:</strong> El Cliente es responsable del uso que sus miembros den al sistema de IA y de informarles de esta naturaleza.</li>
+        </ul>
+
+        <h3>3.3 Disponibilidad</h3>
+        <p>
+            El servicio de IA depende de la disponibilidad de la API de Xiaomi. El desarrollador del Bot no garantiza la disponibilidad continua del servicio, ni se hace responsable por interrupciones, límites de tasa o cambios en la API de terceros.
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>4. Tratamiento de Datos Personales</h2>
+
+        <h3>4.1 Datos recopilados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dato</th>
+                    <th>Propósito</th>
+                    <th>Retención</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID de usuario de Discord</td>
+                    <td>Gestión de economía, roles, tickets</td>
+                    <td>Eliminado con el bot</td>
+                </tr>
+                <tr>
+                    <td>Mensajes de Discord</td>
+                    <td>Comandos, historial de tickets</td>
+                    <td>Solo en hilos de tickets (hasta cierre)</td>
+                </tr>
+                <tr>
+                    <td>Consultas de IA</td>
+                    <td>Generación de respuestas</td>
+                    <td>No se almacenan en el Bot</td>
+                </tr>
+                <tr>
+                    <td>Datos de economía</td>
+                    <td>Sistema de monedas y niveles</td>
+                    <td>Almacenamiento local o Redis</td>
+                </tr>
+                <tr>
+                    <td>Token de Discord</td>
+                    <td>Autenticación del bot</td>
+                    <td>Almacenado en servidor local</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4.2 Envío de datos a terceros</h3>
+        <div class="highlight red">
+            <p><strong>Importante:</strong> Cuando un usuario utiliza el comando de IA, su mensaje es enviado a los servidores de Xiaomi Corporation para ser procesado. El Bot no almacena ni registra estas consultas, pero el proveedor de IA puede tener sus propias políticas de retención de datos.</p>
+        </div>
+
+        <p>El Cliente debe informar a sus miembros que:</p>
+        <ul>
+            <li>Las consultas de IA son procesadas por un servicio externo (Xiaomi).</li>
+            <li>No deben introducir información personal sensible en las consultas de IA.</li>
+            <li>El contenido generado por IA no es verificado ni garantizado.</li>
+        </ul>
+
+        <h3>4.3 Derechos del usuario</h3>
+        <p>De conformidad con las regulaciones aplicables de protección de datos (incluyendo RGPD, CCPA y legislación local), los usuarios tienen derecho a:</p>
+        <ul>
+            <li><strong>Acceso:</strong> Solicitar información sobre los datos que el Bot almacena sobre ellos.</li>
+            <li><strong>Rectificación:</strong> Solicitar la corrección de datos inexactos.</li>
+            <li><strong>Eliminación:</strong> Solicitar la eliminación de sus datos del sistema.</li>
+            <li><strong>Portabilidad:</strong> Solicitar sus datos en formato estructurado.</li>
+        </ul>
+
+        <h3>4.4 Seguridad</h3>
+        <ul>
+            <li>El Bot almacena datos en un servidor bajo el control del Cliente, no en servidores del desarrollador.</li>
+            <li>Las credenciales (tokens, API keys) se almacenan en archivos locales con encriptación opcional.</li>
+            <li>El Cliente es responsable de la seguridad de su servidor y de la configuración del Bot.</li>
+        </ul>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>5. Obligaciones del Cliente</h2>
+        <ul>
+            <li><strong>Cumplimiento de ToS de Discord:</strong> El Cliente debe cumplir con los <a href="https://discord.com/terms" target="_blank">Términos de Servicio de Discord</a> y las <a href="https://discord.com/guidelines" target="_blank">Directivas de la Comunidad</a>.</li>
+            <li><strong>Licencias de API:</strong> El Cliente es responsable de obtener y mantener cualquier licencia o clave de API necesaria (incluyendo la API key de Xiaomi si aplica).</li>
+            <li><strong>Uso responsable:</strong> El Cliente no utilizará el Bot para actividades ilegales, fraudulentas o que violen derechos de terceros.</li>
+            <li><strong>Responsabilidad sobre miembros:</strong> El Cliente es responsable del uso que sus miembros den del Bot y de sus funcionalidades.</li>
+        </ul>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>6. Propiedad Intelectual</h2>
+        <p>
+            El código fuente del Bot se distribuye bajo licencia de código abierto. El Cliente tiene derecho a modificar, distribuir y utilizar el Bot conforme a los términos de la licencia aplicable. Las marcas registradas de terceros (Discord, Xiaomi, etc.) son propiedad de sus respectivos titulares.
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>7. Limitación de Responsabilidad</h2>
+        <div class="highlight red">
+            <p><strong>EL BOT SE PROPORCIONA "TAL CUAL" SIN GARANTÍAS DE NINGÚN TIPO.</strong> El desarrollador no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo pero no limitado a pérdida de datos, interrupciones del servicio, o daños al sistema del Cliente.</p>
+        </div>
+
+        <p>Específicamente, el desarrollador no se hace responsable por:</p>
+        <ul>
+            <li>Interrupciones del servicio de IA de Xiaomi.</li>
+            <li>Pérdida de datos almacenados localmente.</li>
+            <li>Decisiones tomadas en base a respuestas generadas por IA.</li>
+            <li>Acciones realizadas por miembros del servidor de Discord.</li>
+        </ul>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>8. Modificaciones y Actualizaciones</h2>
+        <p>
+            El desarrollador se reserva el derecho de modificar estos términos en cualquier momento. Las modificaciones serán efectivas desde su publicación en esta página. El uso continuado del Bot después de las modificaciones constituye aceptación de los nuevos términos.
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>9. Contacto</h2>
+        <p>
+            Para consultas sobre estos términos o sobre el tratamiento de datos, el Cliente puede contactar a través de:
+        </p>
+        <ul>
+            <li>GitHub: <a href="https://github.com/thedarker451-maker/Discord-Cusom-Bot" target="_blank">Repositorio del proyecto</a></li>
+            <li>Issues: <a href="https://github.com/thedarker451-maker/Discord-Cusom-Bot/issues" target="_blank">Reportar problemas</a></li>
+        </ul>
+                <!-- ═══════════════════════════════════════════════════ -->
+        <h2>10. Opensource</h2>
+        <p>
+            Porfavor, Siga recordando de que esto es un bot de código abierto, y que puede ser modificado y distribuido bajo los términos de la licencia aplicable. Asegúrese de revisar la licencia antes de realizar cualquier modificación o redistribución.
+            
+            Ademas de que el desarollador no se hace resspondable de cualquier tipo de copia modificada o distribuida de este bot. Incluyendo que hay copias que estan verificada por el desarollador
+            aun asi se recomienda que se tenga cuidado al descargar y usar copias modificadas de este bot, ya que pueden tener vulnerabilidades de seguridad o incluso contener malwaren.
+            las copias o bots creados con base al código fuente de este bot, 
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <h2>11. Jurisdicción</h2>
+        <p>
+            Estos términos se regirán e interpretarán de conformidad con las leyes de la jurisdicción applicable al Cliente. Cualquier disputa derivada de estos términos será sometida a los tribunales competentes de dicha jurisdicción.
+        </p>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="footer">
+            <p>Discord Custom Bot &copy; 2026 — Todos los derechos reservados.</p>
+        </div>
+
+    </div>
+</body>
+</html>

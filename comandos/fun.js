@@ -85,8 +85,8 @@ export const funCommands = [
             return new SlashCommandBuilder()
                 .setName(this.name)
                 .setDescription(this.description)
-                .addUserOption(o => o.setName("usuario1").setDescription("Primera persona"))
-                .addUserOption(o => o.setName("usuario2").setDescription("Segunda persona"));
+                .addUserOption(o => o.setName("usuario1").setDescription("Primera persona").setRequired(true))
+                .addUserOption(o => o.setName("usuario2").setDescription("Segunda persona").setRequired(true));
         },
         async executeSlash(interaction) {
             const u1 = interaction.options.getUser("usuario1") || interaction.user;
@@ -108,28 +108,28 @@ export const funCommands = [
         }
     },
     {
-        name: "homo",
-        description: "Calcula el porcentaje de compatibilidad homo entre dos usuarios.",
+        name: "amigo",
+        description: "Calcula el nivel de amistad entre dos usuarios.",
         category: "diversión",
-        aliases: [],
+        aliases: ["bff", "amistad"],
         slashBuilder() {
             return new SlashCommandBuilder()
                 .setName(this.name)
                 .setDescription(this.description)
-                .addUserOption(o => o.setName("usuario1"))
-                .addUserOption(o => o.setName("usuario2"));
+                .addUserOption(o => o.setName("usuario1").setDescription("Primer usuario").setRequired(true))
+                .addUserOption(o => o.setName("usuario2").setDescription("Segundo usuario").setRequired(true));
         },
         async executeSlash(interaction) {
             const u1 = interaction.options.getUser("usuario1") || interaction.user;
             const u2 = interaction.options.getUser("usuario2") || interaction.user;
             const pct = (parseInt(u1.id.slice(-4), 10) + parseInt(u2.id.slice(-4), 10)) % 101;
-            await interaction.reply(`🏳️‍🌈 **${u1.username}** × **${u2.username}** → **${pct}%** de vibra rainbow`);
+            await interaction.reply(`🤝 **${u1.username}** y **${u2.username}** son **${pct}%** mejores amigos!`);
         },
         async executePrefix(message, args) {
             const u1 = resolveUser(message, args[0]);
             const u2 = resolveUser(message, args[1]);
             const pct = (parseInt(u1.id.slice(-4), 10) + parseInt(u2.id.slice(-4), 10)) % 101;
-            await message.reply(`🏳️‍🌈 **${u1.username}** × **${u2.username}** → **${pct}%** de vibra rainbow`);
+            await message.reply(`🤝 **${u1.username}** y **${u2.username}** son **${pct}%** mejores amigos!`);
         }
     },
     {
